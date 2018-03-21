@@ -4,6 +4,30 @@
         <description>ServletContextListener</description>
         <listener-class>billing_package.InitListener</listener-class>
     </listener>
+    <servlet>
+        <servlet-name>MainMenu</servlet-name>
+        <servlet-class>billing_package.MainMenu</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InserUserNumberServlet</servlet-name>
+        <servlet-class>billing_package.InserUserNumberServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BillingMenuServlet</servlet-name>
+        <servlet-class>billing_package.BillingMenuServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MainMenu</servlet-name>
+        <url-pattern>/MainMenu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InserUserNumberServlet</servlet-name>
+        <url-pattern>/InserUserNumberServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BillingMenuServlet</servlet-name>
+        <url-pattern>/BillingMenuServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
