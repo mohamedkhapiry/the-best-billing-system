@@ -21,9 +21,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MainMenu extends HttpServlet {
 
-    Connection conn;
-    PreparedStatement pst;
-    ResultSet rs;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,13 +37,9 @@ public class MainMenu extends HttpServlet {
         pt.println(
         "<li><a  class=\"link\" href=''><input  class=\"click\" type=\"submit\" value='Adding rate plan'/></a></li><br>\n" +
         "<li><a  class=\"link\" href=''> <input class=\"click\" type=\"submit\" value='Add customer'/></a></li><br>\n" +
-        "<li><a  class=\"link\" href=''><input  class=\"click\" type=\"submit\" value='Extracr bill'/></a></li><br>\n"
+        "<li><a  class=\"link\" href='BillingMenuServlet'><input  class=\"click\" type=\"submit\" value='Extracr bill'/></a></li><br>\n"
         );
-        
-        
-        //conn = (Connection) request.getServletContext().getAttribute("conn");
-       
-        
+  
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
