@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,21 +41,25 @@ public class BillingServet extends HttpServlet {
     int voice_units_inside;
     int voice_units_inside_total;
     int voice_units_outside;
+    int voice_units_outside_total;
     double sms_cost;
     BigDecimal sms_cost_big;
     int sms_units_inside;
     int sms_units_inside_total;
     int sms_units_outside;
+    int sms_units_outside_total;
     double data_cost;
     BigDecimal data_cost_big;
     int data_amount=0;
     double onetimefee_cost;
     int max_voice_fu;
     int max_sms_fu;
+    int max_voice_fu_other;
+    int max_sms_fu_other;
     int recuring_cost;
     String profile_name;
     String user_name;
-    BigDecimal total=new BigDecimal(0);
+    BigDecimal total;
     
     
     /**
@@ -79,10 +84,12 @@ public class BillingServet extends HttpServlet {
         voice_units_inside=0;
         voice_units_inside_total=0;
         voice_units_outside=0;
+        voice_units_outside_total=0;
         sms_cost=0;
         sms_units_inside=0;
         sms_units_inside_total=0;
         sms_units_outside=0;
+        sms_units_outside_total=0;
         data_cost=0;
         try {
             //reading the rated CDRs
@@ -104,7 +111,7 @@ public class BillingServet extends HttpServlet {
                     {
                         voice_units_inside_total=voice_units_inside_total+rs.getInt("used_units");
                     }else{
-                        voice_units_outside=voice_units_outside+rs.getInt("used_units");
+                        voice_units_outside_total=voice_units_outside_total+rs.getInt("used_units");
                     }
 //                    System.out.println(voice_units_outside);
 //                    System.out.println(voice_units_inside);
@@ -117,7 +124,7 @@ public class BillingServet extends HttpServlet {
                     {
                         sms_units_inside_total=sms_units_inside_total+rs.getInt("used_units");
                     }else{
-                        sms_units_outside=sms_units_outside+rs.getInt("used_units");
+                        sms_units_outside_total=sms_units_outside_total+rs.getInt("used_units");
                     }
                 }
             }
@@ -126,15 +133,7 @@ public class BillingServet extends HttpServlet {
             rs=pst.executeQuery();
             if(rs.next())
             {
-                user_name=rs.getString("name");
-               if(voice_units_inside_total > rs.getInt("voice_fu"))
-               {
-                   voice_units_inside=voice_units_inside_total-rs.getInt("voice_fu");
-               }
-               if(sms_units_inside_total > rs.getInt("sms_fu"))
-               {
-                   sms_units_inside=sms_units_inside_total-rs.getInt("sms_fu");
-               }
+               user_name=rs.getString("name");
                pst=conn.prepareStatement("select * from rateplan where planid=?");
                pst.setInt(1,rs.getInt("rate_plan_id"));
                rs=pst.executeQuery();
@@ -142,16 +141,38 @@ public class BillingServet extends HttpServlet {
                {
                  
                  profile_name=rs.getString("name");
+                 max_voice_fu=rs.getInt("voice_fu");
+                 max_voice_fu_other=rs.getInt("voice_fu_other");
+                 max_sms_fu=rs.getInt("sms_fu");
+                 max_sms_fu_other=rs.getInt("sms_fu_other");
+                  if(voice_units_inside_total > max_voice_fu)
+                    {
+                     voice_units_inside=voice_units_inside_total-max_voice_fu;
+                    }
+                  if(voice_units_outside_total > max_voice_fu_other)
+                    {
+                     voice_units_outside=voice_units_outside_total-max_voice_fu_other;
+                    }
+                  if(sms_units_inside_total > max_sms_fu)
+                    {
+                     sms_units_inside=sms_units_inside_total-rs.getInt("sms_fu");
+                    }
+                  if(sms_units_outside_total > max_sms_fu_other)
+                    {
+                     sms_units_outside=sms_units_outside_total-max_sms_fu_other;
+                    }
                  voice_cost=voice_cost+(voice_units_inside+voice_units_outside)*rs.getInt("voice_unit_price");
                  voice_cost_big=new BigDecimal(voice_cost);
                  voice_cost_big=voice_cost_big.divide(new BigDecimal(100.0),2,2);//.divideToIntegralValue(new BigDecimal(100.0));
                  sms_cost=sms_cost+(sms_units_inside+sms_units_outside)*rs.getInt("sms_unit_price");
                  sms_cost_big=new BigDecimal(sms_cost);
                  sms_cost_big=sms_cost_big.divide(new BigDecimal(100.0),2,2);
-                 max_voice_fu=rs.getInt("voice_fu");
-                 max_sms_fu=rs.getInt("sms_fu");
                  recuring_cost=rs.getInt("recurring");
                } 
+               
+                
+              
+               
                
             }
             data_cost_big=new BigDecimal(data_cost);
@@ -195,8 +216,8 @@ public class BillingServet extends HttpServlet {
         }
          BufferedWriter bw=new BufferedWriter(new FileWriter(filePath));
 //         String line;
-         int total_used_voice_units=voice_units_inside_total+voice_units_outside;
-         int total_used_sms_units=sms_units_inside_total+sms_units_outside;
+         int total_used_voice_units=voice_units_inside_total+voice_units_outside_total;
+         int total_used_sms_units=sms_units_inside_total+sms_units_outside_total;
          bw.write("ORANG EGYPT");
          bw.newLine();
          bw.write(" ");
@@ -213,7 +234,7 @@ public class BillingServet extends HttpServlet {
          bw.newLine();
          bw.write("voice units for the same mobile network = "+voice_units_inside_total+"\n");
          bw.newLine();
-         bw.write("voice units for other mobile networks = "+voice_units_outside+"\n\n");
+         bw.write("voice units for other mobile networks = "+voice_units_outside_total+"\n\n");
          bw.newLine();
          bw.write("____________________________________________________________________");
          bw.newLine();
@@ -225,13 +246,12 @@ public class BillingServet extends HttpServlet {
          bw.newLine();
          bw.write("sms units for the same mobile network = "+sms_units_inside_total+"\n");
          bw.newLine();
-         bw.write("sms units for other mobile networks = "+sms_units_outside+"\n\n");
+         bw.write("sms units for other mobile networks = "+sms_units_outside_total+"\n\n");
           bw.newLine();
          bw.write("____________________________________________________________________");
          bw.newLine();
          bw.write("total sms cost = "+sms_cost_big+"\n");
          bw.newLine();
-         bw.write(" ");
          bw.write(" ");
          bw.newLine();
          bw.write("total data units = "+data_amount+"\n");
@@ -250,8 +270,9 @@ public class BillingServet extends HttpServlet {
          bw.newLine();
          bw.write("____________________________________________________________________");
          bw.newLine();
-         total=total.add(voice_cost_big).add(sms_cost_big).add(data_cost_big).add(new BigDecimal(recuring_cost)).add(new BigDecimal(onetimefee_cost)).multiply(new BigDecimal(1.1));
          
+         total=voice_cost_big.add(sms_cost_big).add(data_cost_big).add(new BigDecimal(recuring_cost)).add(new BigDecimal(onetimefee_cost)).multiply(new BigDecimal(1.1));
+         System.err.println(total);
          bw.write("total = "+total.divide(new BigDecimal(1.0),2,2)+"\n");
          bw.newLine();
          bw.write(" ");

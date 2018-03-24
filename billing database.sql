@@ -7,8 +7,6 @@ CREATE TABLE Customer (
     MSISDN bigint   NOT NULL,
     Rate_plan_id int   NOT NULL,
     End_date date   NOT NULL,
-    SMS_FU int   NOT NULL,
-    Voice_FU int   NOT NULL,
     CONSTRAINT pk_Customer PRIMARY KEY (
         CustomerID
      ),
@@ -24,16 +22,14 @@ CREATE TABLE RatePlan (
     Recurring float   NOT NULL,
     sms_fu int NOT NULL,
     voice_fu int NOT NULL,
+    sms_fu_other int NOT NULL,
+    voice_fu_other int NOT NULL,
     sms_unit_price int NOT NULL,
     voice_unit_price int NOT NULL,
     CONSTRAINT pk_RatePlan PRIMARY KEY (
         PlanID
      )
 );
-
-
-
-
 
 
 CREATE TABLE OneTimeFee (
@@ -45,11 +41,6 @@ CREATE TABLE OneTimeFee (
      )
 );
 
-CREATE TABLE Customer_Fee (
-    CID serial NOT NULL,
-    FID int   NOT NULL,
-    Billed boolean   NOT NULL
-);
 
 CREATE TABLE Rated_CDR (
     CDRID serial   NOT NULL,
@@ -69,13 +60,8 @@ CREATE TABLE Rated_CDR (
 ALTER TABLE Customer ADD CONSTRAINT fk_Customer_Rate_plan_id FOREIGN KEY(Rate_plan_id)
 REFERENCES RatePlan (PlanID);
 
-
-ALTER TABLE Customer_Fee ADD CONSTRAINT fk_Customer_Fee_CID FOREIGN KEY(CID)
-REFERENCES Customer (CustomerID);
-
-ALTER TABLE Customer_Fee ADD CONSTRAINT fk_Customer_Fee_FID FOREIGN KEY(FID)
-REFERENCES OneTimeFee (Fee_ID);
-
 ALTER TABLE Rated_CDR ADD CONSTRAINT fk_Rated_CDR_CID FOREIGN KEY(CID)
 REFERENCES Customer (CustomerID);
+
+
 
