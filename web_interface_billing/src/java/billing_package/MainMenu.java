@@ -34,10 +34,11 @@ public class MainMenu extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter pt = response.getWriter();
+        request.getRequestDispatcher("header.html").include(request, response);
         pt.println(
         "<li><a  class=\"link\" href=''><input  class=\"click\" type=\"submit\" value='Adding rate plan'/></a></li><br>\n" +
         "<li><a  class=\"link\" href=''> <input class=\"click\" type=\"submit\" value='Add customer'/></a></li><br>\n" +
-        "<li><a  class=\"link\" href='BillingMenuServlet'><input  class=\"click\" type=\"submit\" value='Extracr bill'/></a></li><br>\n"
+        "<li><a  class=\"link\" href='BillingMenuServlet'><input  class=\"click\" type=\"submit\" value='Extract bill'/></a></li><br>\n"
         );
   
     }

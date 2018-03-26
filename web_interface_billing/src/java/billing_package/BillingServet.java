@@ -281,7 +281,7 @@ public class BillingServet extends HttpServlet {
 
          
          bw.close();
-        
+        response.sendRedirect("MainMenu");
         
         
         

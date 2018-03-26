@@ -43,6 +43,7 @@ public class BillingMenuServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter pt = response.getWriter();
+        request.getRequestDispatcher("header.html").include(request, response);
         conn = (Connection) request.getServletContext().getAttribute("conn");
         if (request.getParameter("msisdn") == null) {
             pt.println("<div align='center'>\n"
