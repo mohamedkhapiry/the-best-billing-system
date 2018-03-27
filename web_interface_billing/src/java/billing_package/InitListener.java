@@ -24,7 +24,7 @@ public class InitListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
-            Connection conn= DriverManager.getConnection("jdbc:postgresql://localhost:5433/billing", "postgres", "334866");
+            Connection conn= DriverManager.getConnection("jdbc:postgresql://localhost:5432/billing", "postgres", "334866");
             sce.getServletContext().setAttribute("conn", conn);
         } catch (SQLException ex) {
             Logger.getLogger(InitListener.class.getName()).log(Level.SEVERE, null, ex);
