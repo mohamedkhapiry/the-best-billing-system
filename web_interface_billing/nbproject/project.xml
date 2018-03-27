@@ -7,11 +7,7 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
-<<<<<<< HEAD
-                    <file>${libs.PostgreSQLDriver.classpath}</file>
-=======
                     <file>${file.reference.itextpdf-5.5.13.jar}</file>
->>>>>>> b3f87662a5497285f64a4821ff93a38eeb1c7e57
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
