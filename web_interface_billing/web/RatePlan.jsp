@@ -34,6 +34,7 @@ input[type=text], input[type=submit],input[type=integer]{
 }
 
 button {
+    
     background-color: #ff7922;
     color: white;
     padding: 14px 20px;
@@ -65,7 +66,7 @@ span.psw {
 }
 #5{
     margin: auto;
-    width: 60%;
+    width: 50%;
     border: 3px solid #000000;
     padding: 10px;    
 }
@@ -83,11 +84,11 @@ span.psw {
 
 <%@include file= "header.html"%>
 
-<div id="5">
+<div id="5" class="container">
 <form action="RatePlan.jsp" >
 
 
-  <div class="container"  >
+  
     <label for="uname"><b>Rate Plan Name: </b></label><br>
     <input type="text" placeholder="Enter Rate Plan Name" name="Name" required><br>
 
@@ -116,13 +117,15 @@ span.psw {
       <label for="uname"><b>Voice Unit Price:</b></label><br>
     <input type="integer" placeholder="Enter Voice Unit Price in Pt." name="VoicePrice" required><br>
     
-     
-    <button type="submit">Submit</button>
-   <button> <a href='MainMenu'>Back</a></button><br>
-  </div>
+     <button type="submit">Submit</button>
+   
+ 
 
 
 </form>
+ 
+        <div align='center'> <a  href='MainMenu'><button style="width:80%;" type="submit">Back</button></a></div><br>
+
 </div>
 </body>
     

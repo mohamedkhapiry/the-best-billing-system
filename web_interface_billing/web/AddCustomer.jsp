@@ -85,11 +85,9 @@ span.psw {
     
     <body>
 <%@include file= "header.html"%>
-<div id="5">
+<div id="5" class="container">
 <form action="AddCustomer.jsp" >
   
-
-  <div class="container"  >
     <label for="uname"><b>Name: </b></label><br>
     <input type="text" placeholder="Enter Customer Name" name="Name" required><br>
 
@@ -118,11 +116,11 @@ span.psw {
     
      
     <button type="submit">Submit</button>
-   <button> <a href='MainMenu'>Back</a></button><br>
-  </div>
+   
 
 
 </form>
+    <div align='center'> <a  href='MainMenu'><button style="width:80%;" type="submit">Back</button></a></div><br>
 </div>
 </body>
     

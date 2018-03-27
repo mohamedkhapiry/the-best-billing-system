@@ -46,45 +46,82 @@ public class BillingMenuServlet extends HttpServlet {
         request.getRequestDispatcher("header.html").include(request, response);
         conn = (Connection) request.getServletContext().getAttribute("conn");
         if (request.getParameter("msisdn") == null) {
-            pt.println("<div align='center'>\n"
+            pt.println("<style>"
+                    + "input[type=number], input[type=submit],input[type=integer]{\n"
+                    + "    width:100%;\n"
+                    + "    padding: 12px 20px;\n"
+                    + "    margin: 8px 0;\n"
+                    + "    display: inline-block;\n"
+                    + "    border: 1px solid #ccc;\n"
+                    + "    box-sizing: border-box;\n"
+                    + "   \n"
+                    + "}"
+                    + "button {\n"
+                    + "    background-color: #ff7922;\n"
+                    + "    color: white;\n"
+                    + "    padding: 14px 20px;\n"
+                    + "    margin: 8px 0;\n"
+                    + "    border: none;\n"
+                    + "    cursor: pointer;\n"
+                    + "    width:100%;\n"
+                    + "}\n"
+                    + "\n"
+                    + "button:hover {\n"
+                    + "    opacity: 0.8;\n"
+                    + "}\n"
+                    + "\n"
+                    + "h2\n"
+                    + "{\n"
+                    + "   margin: auto; \n"
+                    + "}\n"
+                    + ".container {\n"
+                    + "   \n"
+                    + "    margin: auto;\n"
+                    + "    width: 60%;\n"
+                    + "    border: 3px solid #000000;\n"
+                    + "    padding: 10px;\n"
+                    + "}\n"
+                    + "</style>"
+                    + "<div align='center' class='container'>\n"
+                    //                    + "insert customer number<br><br>"
                     + "       <form method='get' action='BillingMenuServlet'>\n"
-                    + "        <input type='number' name='msisdn' required><br><br>\n"
-                    + "        <input type='submit' value='enter'>  \n"
+                    //                    + "        <input type='number' name='msisdn' required><br><br>\n"
+                    + " <input type=\"number\" placeholder=\"insert customer number\" name=\"msisdn\" required><br>"
+                    + "        <button type='submit'>Enter</button>  \n"
                     + "           </form>\n"
+                    + "      <a  href='MainMenu'><button  type=\"submit\">Back</button></a><br>"
                     + "        </div> \n"
                     + "");
         } else {
             msisdn = Integer.parseInt(request.getParameter("msisdn"));
 
-        try {
-            pst=conn.prepareStatement("select * from customer where msisdn=?");
-            pst.setInt(1, msisdn);
-            rs=pst.executeQuery();
-            if(rs.next())
-            {
-                customer_id=rs.getInt(1);
-                pt.println("one time fee services: <br> \n<form method='get' action='BillingServet'>");
-                pst=conn.prepareStatement("select * from onetimefee");
-                rs=pst.executeQuery();
-                while(rs.next())
-                {
-                    pt.println("<input type='checkbox' name='checks' value='"+rs.getInt(3)+"'>"+rs.getString(2)+"<br>");
-                }
-                pt.println(
+            try {
+                pst = conn.prepareStatement("select * from customer where msisdn=?");
+                pst.setInt(1, msisdn);
+                rs = pst.executeQuery();
+                if (rs.next()) {
+                    customer_id = rs.getInt(1);
+                    pt.println("one time fee services: <br> \n<form method='get' action='BillingServet'>");
+                    pst = conn.prepareStatement("select * from onetimefee");
+                    rs = pst.executeQuery();
+                    while (rs.next()) {
+                        pt.println("<input type='checkbox' name='checks' value='" + rs.getInt(3) + "'>" + rs.getString(2) + "<br>");
+                    }
+                    pt.println(
                             "<div align='center'>"
-                          + "<input type='hidden' name='customer_id' value='"+customer_id+"'>"
-                          + "<br><input type='submit' value='extract the bill'>"
-                          + "</div></form>"
-                           );
-            }else{
-                pt.println("<div align='center'>"
-                        + "The MSISDN isn't avilable<br><br>"
-                        + "<a href='BillingMenuServlet'>Back</a>"
-                        + "</div>");
+                            + "<input type='hidden' name='customer_id' value='" + customer_id + "'>"
+                            + "<br><input type='submit' value='extract the bill'>"
+                            + "</div></form>"
+                    );
+                } else {
+                    pt.println("<div align='center'>"
+                            + "The MSISDN isn't avilable<br><br>"
+                            + "<a href='BillingMenuServlet'>Back</a>"
+                            + "</div>");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(BillingMenuServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(BillingMenuServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
         }
     }
 
