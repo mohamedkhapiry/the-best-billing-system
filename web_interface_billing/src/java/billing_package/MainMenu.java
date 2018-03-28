@@ -36,9 +36,17 @@ public class MainMenu extends HttpServlet {
         PrintWriter pt = response.getWriter();
         request.getRequestDispatcher("header.html").include(request, response);
         pt.println(
-        "<li><a  class=\"link\" href='RatePlan.jsp'><input  class=\"click\" type=\"submit\" value='Adding rate plan'/></a></li><br>\n" +
-        "<li><a  class=\"link\" href='AddCustomer.jsp'> <input class=\"click\" type=\"submit\" value='Add customer'/></a></li><br>\n" +
-        "<li><a  class=\"link\" href='BillingMenuServlet'><input  class=\"click\" type=\"submit\" value='Extract bill'/></a></li><br>\n"
+                "<div align='center'>"
+               + "<table align='center' width='60%'>"
+               + "<tr>"
+                        + "<td align='center'><a href='RatePlan.jsp'> <img style='height: 50px' src='rate.png' ><br></a>add rateplan</td>"
+                        + "<td align='center'><a href='AddCustomer.jsp'> <img style='height: 50px' src='customer.png'><br></a>add customer</td>"
+                        + "<td align='center'><a href='BillingMenuServlet'> <img style='height: 50px' src='bill.png'><br></a>Extract bill</td>"
+               +"</tr>"
+                        + "</div>"
+//        "<li><a  class=\"link\" href='RatePlan.jsp'><input  class=\"click\" type=\"submit\" value='Adding rate plan'/></a></li><br>\n" +
+//        "<li><a  class=\"link\" href='AddCustomer.jsp'> <input class=\"click\" type=\"submit\" value='Add customer'/></a></li><br>\n" +
+//        "<li><a  class=\"link\" href='BillingMenuServlet'><input  class=\"click\" type=\"submit\" value='Extract bill'/></a></li><br>\n"
         );
   
     }
