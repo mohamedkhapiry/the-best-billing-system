@@ -316,7 +316,7 @@ public class BillingServet extends HttpServlet {
            
             document.open();
             Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
-            String out = "ORANG EGYPT \n\n\n"
+            String out = "ORANGE EGYPT \n\n\n"
                     + "customer name= " + user_name + "\n"
                     + "profile name= " + profile_name + "\n\n"
                     + "total voice units = " + total_used_voice_units + "\n"

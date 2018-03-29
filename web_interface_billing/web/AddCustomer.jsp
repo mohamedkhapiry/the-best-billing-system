@@ -75,6 +75,33 @@ span.psw {
 }
 
 
+.alert {
+    padding: 20px;
+    background-color: #000000;
+    color: #ff7922 ;
+    display: inline-block;
+    position: absolute;
+    bottom: 300px;
+    right: 30px;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: #ff7922;
+}
+
+
+
 </style>
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -122,9 +149,7 @@ span.psw {
 </form>
     <div align='center'> <a  href='MainMenu'><button style="width:80%;" type="submit">Back</button></a></div><br>
 </div>
-</body>
-    
-</html>
+
 
 
 <%
@@ -165,5 +190,20 @@ d.setTime(d.getTime() + 30 * 1000 * 60 * 60 * 24);
     
     
 
-}
 %>
+    
+   <div class="alert">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+  <strong> Successfully Submitted!! </strong> <br> Customer data successfully added.
+</div>
+   <%
+       }
+%>
+
+
+
+
+
+</body>
+    
+</html>

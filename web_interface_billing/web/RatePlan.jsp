@@ -72,6 +72,33 @@ span.psw {
 }
 
 
+.alert {
+    padding: 20px;
+    background-color: #000000;
+    color: #ff7922 ;
+    display: inline-block;
+    position: absolute;
+    bottom: 300px;
+    right: 30px;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: #ff7922;
+}
+
+
+
 </style>
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -85,7 +112,7 @@ span.psw {
 <%@include file= "header.html"%>
 
 <div id="5" class="container">
-<form action="RatePlan.jsp" >
+<form action="RatePlan.jsp" method="get">
 
 
   
@@ -117,19 +144,17 @@ span.psw {
       <label for="uname"><b>Voice Unit Price:</b></label><br>
     <input type="integer" placeholder="Enter Voice Unit Price in Pt." name="VoicePrice" required><br>
     
-     <button type="submit">Submit</button>
-   
- 
+    
+   <button type="submit">Submit</button>
+<!--<div align='center'> <a  href=''><button style="width:80%;" type="submit">Submit</button></a></div><br>-->
 
 
 </form>
- 
-        <div align='center'> <a  href='MainMenu'><button style="width:80%;" type="submit">Back</button></a></div><br>
+  
+  <div align='center'> <a  href='MainMenu'><button style="width:80%;" type="submit">Back</button></a></div><br>
 
 </div>
-</body>
-    
-</html>
+
 
 
 <%
@@ -160,12 +185,16 @@ if(name!=null&&Des!=null&&Recurring!=null&&SMSFU!=null&&VoiceFU!=null&&SMSFUO!=n
     st.setInt(9, Integer.parseInt(VoicePrice));
     st.executeUpdate();
     
+%>
     
-
-}
+   <div class="alert">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+  <strong> Successfully Submitted!! </strong> <br> Rate Plan successfully saved.
+</div>
+   <%
+       }
 %>
 
-
-
-
-
+</body>
+    
+</html>
