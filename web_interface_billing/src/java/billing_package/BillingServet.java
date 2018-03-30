@@ -260,6 +260,7 @@ public class BillingServet extends HttpServlet {
 //                String headerValue = String.format("attachment; filename="+user_name+"'s_bill");
 //                response.setHeader(headerKey, headerValue);
 //         
+<<<<<<< HEAD
 //                // obtains response's output stream
 //                OutputStream outStream = response.getOutputStream();
 ////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////////
@@ -298,6 +299,47 @@ public class BillingServet extends HttpServlet {
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(BillingServet.class.getName()).log(Level.SEVERE, null, ex);
             } catch (DocumentException ex) { 
+=======
+//         bw.close();
+//        response.sendRedirect("MainMenu");
+        
+        
+       Document document = new Document() ;
+        try {
+            FileOutputStream fs=new FileOutputStream(filePath);
+            PdfWriter.getInstance(document, fs);
+           
+            document.open();
+            Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+            String out = "ORANGE EGYPT \n\n\n"
+                    + "customer name= " + user_name + "\n"
+                    + "profile name= " + profile_name + "\n\n"
+                    + "total voice units = " + total_used_voice_units + "\n"
+                    + "voice units for the same mobile network = " + voice_units_inside_total + "\n"
+                    + "voice units for other mobile networks = " + voice_units_outside_total + "\n\n"
+                    + "____________________________________________________________________"+"\n"
+                    + "total voice cost = " + voice_cost_big + "\n\n"
+                    + "total sms units = " + total_used_sms_units + "\n"
+                    + "sms units for the same mobile network = " + sms_units_inside_total + "\n"
+                    + "sms units for other mobile networks = " + sms_units_outside_total + "\n\n"
+                    + "____________________________________________________________________"+"\n"
+                    + "total sms cost = " + sms_cost_big + "\n\n"
+                    + "total data units = " + data_amount + "\n"
+                    + "____________________________________________________________________"+"\n"
+                    + "total data cost = " + data_cost_big + "\n\n"
+                    + "total one time fee cost = " + onetimefee_cost + "\n\n"
+                    + "recuring cost = " + recuring_cost + "\n"
+                    + "____________________________________________________________________"+"\n"
+                    + "total = " + total.divide(new BigDecimal(1.0), 2, 2) + "\n\n"
+                    + "*the total price is calculated after adding 10% taxes.";
+        document.add(new Paragraph(out)); 
+        document.close();
+        fs.close();
+        
+        
+        
+        } catch (DocumentException ex) {
+>>>>>>> 4eb20dc57c5d7c26356814f92ff3a9a02a2d219d
             Logger.getLogger(BillingServet.class.getName()).log(Level.SEVERE, null, ex);
         } 
 //         catch (DocumentException ex) {
