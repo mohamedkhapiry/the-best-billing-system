@@ -137,7 +137,9 @@ public class BillingMenuServlet extends HttpServlet {
                     + "    padding: 10px;\n"
                     + "}\n"
                     + "</style>"
-                            + "<div class='container'>one time fee services: <br> \n<form method='get' action='BillingServet'>");
+                    + "<div  class='container'>"
+                    +"one time fee services: <br> \n<form method='get' action='BillingServet'>"
+                            );
                     pst = conn.prepareStatement("select * from onetimefee");
                     rs = pst.executeQuery();
                     while (rs.next()) {
@@ -147,7 +149,9 @@ public class BillingMenuServlet extends HttpServlet {
                             "<div align='center' >"
                             + "<input type='hidden' name='customer_id' value='" + customer_id + "'>"
                             + "<br><button type='submit' value='extract the bill'>extract the bill</button>"
-                            + "</div></form></div>"
+                            + "</div></form>"
+                               + "      <a  href='MainMenu'><button  type=\"submit\">Back</button></a><br>"     
+                                    + "</div>"
                     );
                 } else {
                     pt.println("<div align='center'>"
