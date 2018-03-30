@@ -7,6 +7,7 @@ CREATE TABLE Customer (
     MSISDN bigint   NOT NULL,
     Rate_plan_id int   NOT NULL,
     End_date date   NOT NULL,
+    Recurring int   NOT NULL,
     CONSTRAINT pk_Customer PRIMARY KEY (
         CustomerID
      ),
@@ -19,7 +20,7 @@ CREATE TABLE RatePlan (
     PlanID serial NOT NULL,
     name text   NOT NULL,
     Description text   NOT NULL,
-    Recurring float   NOT NULL,
+    monthly int  NOT NULL,
     sms_fu int NOT NULL,
     voice_fu int NOT NULL,
     sms_fu_other int NOT NULL,
@@ -52,6 +53,7 @@ CREATE TABLE Rated_CDR (
     serviceID int   NOT NULL,
     Start_Time time   NOT NULL,
     CID int   NOT NULL,
+    Rate int NOT NULL,
     CONSTRAINT pk_Rated_CDR PRIMARY KEY (
         CDRID
      )

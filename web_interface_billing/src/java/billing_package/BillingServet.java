@@ -71,6 +71,7 @@ public class BillingServet extends HttpServlet {
     int max_voice_fu_other;
     int max_sms_fu_other;
     int recuring_cost;
+    int monthly_cost;
     String profile_name;
     String user_name;
     BigDecimal total;
@@ -159,6 +160,7 @@ public class BillingServet extends HttpServlet {
             if(rs.next())
             {
                user_name=rs.getString("name");
+               recuring_cost=rs.getInt("recurring");
                pst=conn.prepareStatement("select * from rateplan where planid=?");
                pst.setInt(1,rs.getInt("rate_plan_id"));
                rs=pst.executeQuery();
@@ -192,7 +194,8 @@ public class BillingServet extends HttpServlet {
                  sms_cost=sms_cost+(sms_units_inside+sms_units_outside)*rs.getInt("sms_unit_price");
                  sms_cost_big=new BigDecimal(sms_cost);
                  sms_cost_big=sms_cost_big.divide(new BigDecimal(100.0),2,2);
-                 recuring_cost=rs.getInt("recurring");
+                 monthly_cost=rs.getInt("monthly");
+                 
                } 
                
                 
@@ -241,7 +244,7 @@ public class BillingServet extends HttpServlet {
 
          int total_used_voice_units=voice_units_inside_total+voice_units_outside_total;
          int total_used_sms_units=sms_units_inside_total+sms_units_outside_total;
-         total=voice_cost_big.add(sms_cost_big).add(data_cost_big).add(new BigDecimal(recuring_cost)).add(new BigDecimal(onetimefee_cost)).multiply(new BigDecimal(1.1));
+         total=(voice_cost_big.add(new BigDecimal(monthly_cost)).add(sms_cost_big).add(data_cost_big).add(new BigDecimal(recuring_cost)).add(new BigDecimal(onetimefee_cost))).multiply(new BigDecimal(1.1));
 
         
        Document document = new Document() ;
@@ -251,7 +254,7 @@ public class BillingServet extends HttpServlet {
            
             document.open();
             Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
-            String out = "ORANG EGYPT \n\n\n"
+            String out = "ORANGE EGYPT \n\n\n"
                     + "customer name= " + user_name + "\n"
                     + "profile name= " + profile_name + "\n\n"
                     + "total voice units = " + total_used_voice_units + "\n"
@@ -268,7 +271,8 @@ public class BillingServet extends HttpServlet {
                     + "____________________________________________________________________"+"\n"
                     + "total data cost = " + data_cost_big + "\n\n"
                     + "total one time fee cost = " + onetimefee_cost + "\n\n"
-                    + "recuring cost = " + recuring_cost + "\n"
+                    + "recuring cost = " + recuring_cost + "\n\n"
+                    + "monthly fees = " + monthly_cost + "\n"
                     + "____________________________________________________________________"+"\n"
                     + "total = " + total.divide(new BigDecimal(1.0), 2, 2) + "\n\n"
                     + "*the total price is calculated after adding 10% taxes.";

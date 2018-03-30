@@ -41,8 +41,8 @@ public class Rating {
     public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
         try {
             Class.forName("org.postgresql.Driver");
-            String url = "jdbc:postgresql://localhost:5432/billing";
-            con = DriverManager.getConnection(url, "postgres", "postgres");
+            String url = "jdbc:postgresql://localhost:5433/billing";
+            con = DriverManager.getConnection(url, "postgres", "5433");
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Rating.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,7 +90,7 @@ public class Rating {
                 int minute = local.get(ChronoField.MINUTE_OF_HOUR);
                 int second = local.get(ChronoField.SECOND_OF_MINUTE);
                 Time time = new Time(hour, minute, second);
-                PreparedStatement st = con.prepareStatement("insert into rated_cdr (billed,external_charge,destination_no,destination_url,used_units,serviceid,start_time,cid) values(?,?,?,?,?,?,?,?)");
+                PreparedStatement st = con.prepareStatement("insert into rated_cdr (billed,external_charge,destination_no,destination_url,used_units,serviceid,start_time,cid,rate) values(?,?,?,?,?,?,?,?,?)");
                 st.setBoolean(1, false);
                 st.setDouble(2, Double.parseDouble(fields[5]));
                 if (sid != 3) {
@@ -106,6 +106,7 @@ public class Rating {
                 st.setInt(6, sid);
                 st.setTime(7, time);
                 st.setInt(8, uid);
+                st.setInt(9, 0);
                 st.executeUpdate();
             } catch (SQLException ex) {
                 ex.printStackTrace();

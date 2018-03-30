@@ -95,8 +95,8 @@ span.psw {
       <label for="uname"><b>Description:</b></label><br>
     <input type="text" placeholder="Enter Description" name="Des" required><br>
     
-      <label for="uname"><b>Recurring:</b></label><br>
-    <input type="text" placeholder="Enter Recurring in LE" name="Recurring" required><br>
+      <label for="uname"><b>Monthly Fees:</b></label><br>
+    <input type="text" placeholder="Enter Monthly Fees in LE" name="Monthly" required><br>
     
       <label for="uname"><b>SMS Free Units:</b></label><br>
     <input type="integer" placeholder="Enter SMS Free Units" name="SMSFU" required><br>
@@ -133,10 +133,10 @@ span.psw {
 
 
 <%
-String name=request.getParameter("Name");
+String name=request.getParameter("Name");;
 System.out.println("name"+name);
 String Des=request.getParameter("Des");
-String Recurring=request.getParameter("Recurring");
+String Monthly=request.getParameter("Monthly");
 String SMSFU=request.getParameter("SMSFU");
 String VoiceFU=request.getParameter("VoiceFU");
 String SMSFUO=request.getParameter("SMSFUO");
@@ -144,14 +144,14 @@ String VoiceFUO=request.getParameter("VoiceFUO");
 String SMSPrice=request.getParameter("SMSPrice");
 String VoicePrice=request.getParameter("VoicePrice");
 
-if(name!=null&&Des!=null&&Recurring!=null&&SMSFU!=null&&VoiceFU!=null&&SMSFUO!=null&&VoiceFUO!=null&&SMSPrice!=null&&VoicePrice!=null)
+if(name!=null&&Des!=null&&Monthly!=null&&SMSFU!=null&&VoiceFU!=null&&SMSFUO!=null&&VoiceFUO!=null&&SMSPrice!=null&&VoicePrice!=null)
 {
    Connection  conn = (Connection) request.getServletContext().getAttribute("conn");
     
-   PreparedStatement st=conn.prepareStatement("insert into rateplan (name,description,recurring,sms_fu,voice_fu,sms_fu_other,voice_fu_other,sms_unit_price,voice_unit_price) values(?,?,?,?,?,?,?,?,?)");
+   PreparedStatement st=conn.prepareStatement("insert into rateplan (name,description,monthly,sms_fu,voice_fu,sms_fu_other,voice_fu_other,sms_unit_price,voice_unit_price) values(?,?,?,?,?,?,?,?,?)");
     st.setString(1, name);
     st.setString(2, Des);
-    st.setDouble(3, Double.parseDouble(Recurring));
+    st.setDouble(3, Double.parseDouble(Monthly));
     st.setInt(4, Integer.parseInt(SMSFU));
     st.setInt(5, Integer.parseInt(VoiceFU));
     st.setInt(6, Integer.parseInt(SMSFUO));
