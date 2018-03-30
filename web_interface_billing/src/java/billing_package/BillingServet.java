@@ -16,6 +16,7 @@ import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,6 +37,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Enumeration;
 
 //import javax.swing.text.Document;
@@ -74,6 +76,9 @@ public class BillingServet extends HttpServlet {
     String profile_name;
     String user_name;
     BigDecimal total;
+    String filePath="";
+    int total_used_voice_units;
+    int total_used_sms_units;
     
     
     /**
@@ -232,125 +237,81 @@ public class BillingServet extends HttpServlet {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Text File","pdf");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showSaveDialog(null);
-        String filePath = "";
+        filePath = "";
          if (returnVal == JFileChooser.APPROVE_OPTION) {
             filePath = chooser.getSelectedFile().getPath();
-//            System.out.println("You chose to open this file: "
-//                    + filePath);
-        }
-         BufferedWriter bw=new BufferedWriter(new FileWriter(filePath));
-//         String line;
-         int total_used_voice_units=voice_units_inside_total+voice_units_outside_total;
-         int total_used_sms_units=sms_units_inside_total+sms_units_outside_total;
-         total=voice_cost_big.add(sms_cost_big).add(data_cost_big).add(new BigDecimal(recuring_cost)).add(new BigDecimal(onetimefee_cost)).multiply(new BigDecimal(1.1));
-//         bw.write("ORANG EGYPT");
-//         bw.newLine();
-//         bw.write(" ");
-//         bw.newLine();
-//         bw.write(" ");
-//         bw.newLine();
-//         bw.write("customer name= "+user_name+"\n");
-//         bw.newLine();
-//         bw.write("profile name= "+profile_name+"\n");
-//         bw.newLine();
-//         bw.write(" ");
-//         bw.newLine();
-//         bw.write("total voice units = "+total_used_voice_units+"\n");
-//         bw.newLine();
-//         bw.write("voice units for the same mobile network = "+voice_units_inside_total+"\n");
-//         bw.newLine();
-//         bw.write("voice units for other mobile networks = "+voice_units_outside_total+"\n\n");
-//         bw.newLine();
-//         bw.write("____________________________________________________________________");
-//         bw.newLine();
-//         bw.write("total voice cost = "+voice_cost_big+"\n");
-//         bw.newLine();
-//         bw.write(" ");
-//         bw.newLine();
-//         bw.write("total sms units = "+total_used_sms_units+"\n");
-//         bw.newLine();
-//         bw.write("sms units for the same mobile network = "+sms_units_inside_total+"\n");
-//         bw.newLine();
-//         bw.write("sms units for other mobile networks = "+sms_units_outside_total+"\n\n");
-//          bw.newLine();
-//         bw.write("____________________________________________________________________");
-//         bw.newLine();
-//         bw.write("total sms cost = "+sms_cost_big+"\n");
-//         bw.newLine();
-//         bw.write(" ");
-//         bw.newLine();
-//         bw.write("total data units = "+data_amount+"\n");
-//          bw.newLine();
-//         bw.write("____________________________________________________________________");
-//         bw.newLine();
-//         bw.write("total data cost = "+data_cost_big+"\n");
-//         bw.newLine();
-//         bw.write(" ");
-//         bw.newLine();
-//         bw.write("total one time fee cost = "+onetimefee_cost+"\n");
-//         bw.newLine();
-//         bw.write(" ");
-//         bw.newLine();
-//         bw.write("recuring cost = "+recuring_cost+"\n");
-//         bw.newLine();
-//         bw.write("____________________________________________________________________");
-//         bw.newLine();
-//         
-//         total=voice_cost_big.add(sms_cost_big).add(data_cost_big).add(new BigDecimal(recuring_cost)).add(new BigDecimal(onetimefee_cost)).multiply(new BigDecimal(1.1));
-//         System.err.println(total);
-//         bw.write("total = "+total.divide(new BigDecimal(1.0),2,2)+"\n");
-//         bw.newLine();
-//         bw.write(" ");
-//         bw.newLine();
-//         bw.write("*the total price is calculated after adding 10% taxes.");
-//
-//         
-//         bw.close();
-//        response.sendRedirect("MainMenu");
-        
-        
-       Document document = new Document() ;
-        try {
-            FileOutputStream fs=new FileOutputStream(filePath);
-            PdfWriter.getInstance(document, fs);
-           
-            document.open();
-            Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
-            String out = "ORANG EGYPT \n\n\n"
-                    + "customer name= " + user_name + "\n"
-                    + "profile name= " + profile_name + "\n\n"
-                    + "total voice units = " + total_used_voice_units + "\n"
-                    + "voice units for the same mobile network = " + voice_units_inside_total + "\n"
-                    + "voice units for other mobile networks = " + voice_units_outside_total + "\n\n"
-                    + "____________________________________________________________________"+"\n"
-                    + "total voice cost = " + voice_cost_big + "\n\n"
-                    + "total sms units = " + total_used_sms_units + "\n"
-                    + "sms units for the same mobile network = " + sms_units_inside_total + "\n"
-                    + "sms units for other mobile networks = " + sms_units_outside_total + "\n\n"
-                    + "____________________________________________________________________"+"\n"
-                    + "total sms cost = " + sms_cost_big + "\n\n"
-                    + "total data units = " + data_amount + "\n"
-                    + "____________________________________________________________________"+"\n"
-                    + "total data cost = " + data_cost_big + "\n\n"
-                    + "total one time fee cost = " + onetimefee_cost + "\n\n"
-                    + "recuring cost = " + recuring_cost + "\n"
-                    + "____________________________________________________________________"+"\n"
-                    + "total = " + total.divide(new BigDecimal(1.0), 2, 2) + "\n\n"
-                    + "*the total price is calculated after adding 10% taxes.";
-        document.add(new Paragraph(out)); 
-        document.close();
-        fs.close();
-        
-        
-        
-        } catch (DocumentException ex) {
-            Logger.getLogger(BillingServet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+         total_used_voice_units=voice_units_inside_total+voice_units_outside_total;
+         total_used_sms_units=sms_units_inside_total+sms_units_outside_total;
+         total=voice_cost_big.add(sms_cost_big).add(data_cost_big).add(new BigDecimal(recuring_cost)).add(new BigDecimal(onetimefee_cost)).multiply(new BigDecimal(1.1));
+
         }
+      
+         try {
+                Document document = new Document() ;
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//                // modifies response
+//                 String mimeType= "application/pdf";
+//                 response.setContentType(mimeType);
+//         
+//                // forces download
+//                String headerKey = "Content-Disposition";
+//                String headerValue = String.format("attachment; filename="+user_name+"'s_bill");
+//                response.setHeader(headerKey, headerValue);
+//         
+//                // obtains response's output stream
+//                OutputStream outStream = response.getOutputStream();
+////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////////
+               PdfWriter.getInstance(document, new FileOutputStream(filePath));
+               document.open();
+               
+               Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+                String out = "ORANG EGYPT \n\n\n"
+                        + "customer name= " + user_name + "\n"
+                        + "profile name= " + profile_name + "\n\n"
+                        + "total voice units = " + total_used_voice_units + "\n"
+                        + "voice units for the same mobile network = " + voice_units_inside_total + "\n"
+                        + "voice units for other mobile networks = " + voice_units_outside_total + "\n\n"
+                        + "____________________________________________________________________"+"\n"
+                        + "total voice cost = " + voice_cost_big + "\n\n"
+                        + "total sms units = " + total_used_sms_units + "\n"
+                        + "sms units for the same mobile network = " + sms_units_inside_total + "\n"
+                        + "sms units for other mobile networks = " + sms_units_outside_total + "\n\n"
+                        + "____________________________________________________________________"+"\n"
+                        + "total sms cost = " + sms_cost_big + "\n\n"
+                        + "total data units = " + data_amount + "\n"
+                        + "____________________________________________________________________"+"\n"
+                        + "total data cost = " + data_cost_big + "\n\n"
+                        + "total one time fee cost = " + onetimefee_cost + "\n\n"
+                        + "recuring cost = " + recuring_cost + "\n"
+                        + "____________________________________________________________________"+"\n"
+                        + "total = " + total.divide(new BigDecimal(1.0), 2, 2) + "\n\n"
+                        + "*the total price is calculated after adding 10% taxes.";
+                document.add(new Paragraph(out));
+                document.close();
+//                byte[] out_byte=out.getBytes();
+//                int bytesRead = -1;
+//                outStream.write(out_byte);
+                  
+                 
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BillingServet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (DocumentException ex) { 
+            Logger.getLogger(BillingServet.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+//         catch (DocumentException ex) {
+//                 
+//         Logger.getLogger(BillingServet.class.getName()).log(Level.SEVERE, null, ex);
+//             }
+       
+
         response.sendRedirect("MainMenu");
     }
+    
 
+
+   
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
