@@ -4,6 +4,7 @@
     Author     : Rouen Antar <rouen49@gmail.com>
 --%>
 
+<%@page import="java.math.BigDecimal"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.util.GregorianCalendar"%>
 <%@page import="java.util.Calendar"%>
@@ -28,15 +29,6 @@ form {
     padding: 10px;}
 
 input[type=text], input[type=submit],input[type=integer]{
-    width:100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-   
-}
-input[type=number], input[type=submit],input[type=integer]{
     width:100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -101,10 +93,9 @@ span.psw {
     <input type="text" placeholder="Enter Customer Name" name="Name" required><br>
 
       <label for="uname"><b>Phone Number:</b></label><br>
-    <input type="number" placeholder="Enter Phone Number" name="msisdn" required><br>
-      <label for="uname"><b>Recurring Cost:</b></label><br>
-    <input type="number" placeholder="Enter recurring cost" name="recurring" required><br>
-    
+    <input type="text" placeholder="Enter Phone Number" name="msisdn" required><br
+        <label for="uname"><b>Recuring cost:</b></label><br>
+    <input type="text" placeholder="Recurring Cost in LE" name="recurring" required><br>
           <label for="uname"><b>Chosse RatePlan</b></label><br><br>
 
     <select name='RatePlans' >
@@ -141,20 +132,15 @@ span.psw {
 
 <%
 String name=request.getParameter("Name");
-
+String recurring=request.getParameter("recurring");
 String msisdn=request.getParameter("msisdn");
-String recurring_cost=request.getParameter("recurring");
 String RatePlans=request.getParameter("RatePlans");
 System.out.println("RatePlans"+RatePlans);
 int Rateid=0;
 
-if(name!=null&&msisdn!=null&&RatePlans!=null&&recurring_cost!=null)
+if(name!=null&&msisdn!=null&&RatePlans!=null&&recurring!=null)
 {
   
-    
-   PreparedStatement st=conn.prepareStatement("insert into customer (name,msisdn,rate_plan_id,end_date,recurring) values(?,?,?,?,?)");
-    st.setString(1, name);
-    st.setInt(2, Integer.parseInt(msisdn));
     Statement stat1= conn.createStatement();
      ResultSet rs1= stat1.executeQuery("select name,planid from rateplan");
         
@@ -165,16 +151,16 @@ if(name!=null&&msisdn!=null&&RatePlans!=null&&recurring_cost!=null)
                Rateid=rs1.getInt(2);
            }
        }
-    st.setInt(3, Rateid);
-   Date d= new java.sql.Date(Calendar.getInstance().getTime().getTime());
-d.setTime(d.getTime() + 30 * 1000 * 60 * 60 * 24);
-//Calendar calendar = new GregorianCalendar(/* remember about timezone! */);
-//calendar.setTime(d);
-//calendar.add(Calendar.DATE, 30);
-//date = calendar.getTime()
-   st.setDate(4,d);
-   st.setInt(5, Integer.parseInt(recurring_cost));
-    st.executeUpdate();
+  
+       
+   PreparedStatement st=conn.prepareStatement("insert into customer (name,msisdn,rate_plan_id,end_date,recurring) values(?,?,?,?,?)");
+    st.setString(1, name);
+    st.setLong(2,Long.parseLong(msisdn));
+    st.setInt(3, );
+    st.setDate(4,Date.valueOf(LocalDate.now()));
+    st.setInt(5, Integer.parseInt(recurring));
+     st.executeUpdate();
+
     
     
 

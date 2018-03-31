@@ -28,7 +28,7 @@ public class BillingMenuServlet extends HttpServlet {
     Connection conn;
     PreparedStatement pst;
     ResultSet rs;   
-    int msisdn;
+    Long msisdn;
     int customer_id;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -93,11 +93,12 @@ public class BillingMenuServlet extends HttpServlet {
                     + "        </div> \n"
                     + "");
         } else {
-            msisdn = Integer.parseInt(request.getParameter("msisdn"));
-
+            msisdn = Long.parseLong(request.getParameter("msisdn"));
+            
+            System.out.println(msisdn);
             try {
                 pst = conn.prepareStatement("select * from customer where msisdn=?");
-                pst.setInt(1, msisdn);
+                pst.setLong(1, msisdn);
                 rs = pst.executeQuery();
                 if (rs.next()) {
                     customer_id = rs.getInt(1);
